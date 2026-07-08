@@ -12,4 +12,14 @@ Write an automated test based on Playwright. The test should:
    b. the product name in response matches the UI
 
    
-5. Open cart and verify the price matches with one on all products page.
+4. Open cart and verify the price matches with one on all products page.
+
+<br><br>
+
+**Prerequisites:**
+- Node.js must be installed on your machine.
+
+<br> 
+
+**Run the test using:**
+npx playwright test tests/findBugs.spec.ts
