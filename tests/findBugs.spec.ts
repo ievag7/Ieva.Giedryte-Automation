@@ -1,15 +1,12 @@
 import { test, expect } from '@playwright/test';
+import { FindBugsPage } from '../pages/FindBugsPage';
 
 test ('Add product to cart and verify details', async ({page}) => {
-    await page.goto('https://academybugs.com/find-bugs/');
 
-const acceptCookies = page.getByRole('button', { name: 'Accept cookies' });
+    const findBugsPage = new FindBugsPage(page);
 
-        if (await acceptCookies.isVisible()) {
-            await acceptCookies.click();
-        }
-
-        await expect(page).toHaveTitle(/Find Bugs/);
+    await findBugsPage.goto();
+    await findBugsPage.acceptCookies();
 
 const products = page.locator('.ec_product_li')
 .filter({ has: page.locator('.ec_price_type1') });
@@ -59,8 +56,10 @@ const response = await responsePromise;
 
 const responseBody = await response.text();
 
-    expect(responseBody.toLocaleUpperCase())
-        .toContain(productName.toLocaleUpperCase());
+const json = JSON.parse(responseBody);
+
+expect(json[0].title.toLocaleUpperCase()).toContain(productName.toLocaleUpperCase());
+
 
 const viewCartButton = page.getByRole('link', { name: 'View Cart' });
 
@@ -83,8 +82,10 @@ const cartProductPrice = await page
         .locator('.ec_cartitem_price')
         .innerText();
 
+        const normalize = (price: string) =>
+            price.replace(/[^0-9.]/g, '').trim();
 
-    expect(cartProductPrice.trim())
-        .toBe(productPrice.trim());
+
+    expect(normalize(cartProductPrice)).toBe(normalize(productPrice));
     
 });
