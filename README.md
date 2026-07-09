@@ -22,4 +22,4 @@ Write an automated test based on Playwright. The test should:
 <br> 
 
 **Run the test using:**
-npx playwright test tests/findBugs.spec.ts
+npx playwright test tests findBugs.spec.ts
